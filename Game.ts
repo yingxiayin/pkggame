@@ -1,4 +1,3 @@
-
 let config = require("./etc/gameconfig");
 
 function doHttp(){
