@@ -48,6 +48,9 @@ const getCardData = async () => {
         console.log("未取到数据")
     }
 
+    console.log("取到数据成功, 第一项数据是:")
+    console.log(tokenIdAndOwner[0])
+
     Http.sendget("127.0.0.1","8561","/fight",
     {
          cardlist: JSON.stringify(tokenIdAndOwner),
