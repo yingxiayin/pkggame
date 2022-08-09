@@ -20,8 +20,8 @@ const getCardData = async () => {
     let tokenIdAndOwner = []
     let allCall = []
 
-    for (let i = 0; i < 3; i++) {
-        for (let i = setId + 1; i < setId + 2223; i++) {
+    for (let i = 0; i < 6; i++) {
+        for (let i = setId + 1; i < setId + 1112; i++) {
             allCall.push({reference: "#" + i, methodName: 'ownerOf', methodParameters: [i]})
         }
 
@@ -34,13 +34,13 @@ const getCardData = async () => {
 
         const results: ContractCallResults = await multicall.call(contractCallContext);
 
-        for (let j = 0; j < 2222; j++) {
+        for (let j = 0; j < 1111; j++) {
             let wallet = results.results.officialContract.callsReturnContext[j].returnValues[0]
             let cardId = results.results.officialContract.callsReturnContext[j].reference
             tokenIdAndOwner.push({"cardId": cardId, "wallet": wallet})
         }
 
-        setId += 2222
+        setId += 1111
         allCall = []
     }
 
