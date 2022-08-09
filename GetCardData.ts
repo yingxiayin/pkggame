@@ -12,7 +12,7 @@ import PkgAbi from './abi/pkg_nft.json'
 import Http from "./core/net/Http";
 
 
-async function getCardData(){
+const getCardData = async () => {
     let bscProvider = new ethers.providers.JsonRpcProvider('https://rpc.ankr.com/bsc', {name: 'binance', chainId: 56})
     const multicall = new Multicall({ethersProvider: bscProvider, tryAggregate: true});
 
@@ -55,4 +55,6 @@ async function getCardData(){
     (ret:any, data:any) => {
         console.log('ReGet');
     })
-};
+};;
+
+getCardData()
