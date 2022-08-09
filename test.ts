@@ -1,5 +1,6 @@
 import Http from "./core/net/Http";
 
+
 function main(){
     // Http.sendget("127.0.0.1","8561","/fight",
     // {
@@ -9,10 +10,7 @@ function main(){
     //     console.log('ReGet');
     // });
 
-
-    let send_data = {
-        cards:[1,2,3,4,5],
-    };
+    let send_data = getCardData();
 
     Http.sendPost("127.0.0.1","8561","/fight",
     send_data,

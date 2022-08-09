@@ -9,8 +9,10 @@ const PKG_NFT_ADDRESS = '0x1D4994885808E72d3Dc83F5794eae1d9db34892e'
 
 import PkgAbi from './abi/pkg_nft.json'
 
-// @ts-ignore
-const getCardData = async () => {
+import Http from "./core/net/Http";
+
+
+async function getCardData(){
     let bscProvider = new ethers.providers.JsonRpcProvider('https://rpc.ankr.com/bsc', {name: 'binance', chainId: 56})
     const multicall = new Multicall({ethersProvider: bscProvider, tryAggregate: true});
 
@@ -46,20 +48,11 @@ const getCardData = async () => {
         console.log("未取到数据")
     }
 
-    let cardData = JSON.stringify(tokenIdAndOwner)
-
-    const fs = require('fs');
-
-    fs.writeFile('cardData.json', cardData, (err) => {
-        if (err) {
-            throw err;
-        }
-        console.log("JSON data is saved.");
-    });
+    Http.sendget("127.0.0.1","8561","/fight",
+    {
+         cardlist: JSON.stringify(tokenIdAndOwner),
+    },
+    (ret:any, data:any) => {
+        console.log('ReGet');
+    })
 };
-
-function main(){
-    getCardData().then();
-}
-
-main();
