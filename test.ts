@@ -1,4 +1,4 @@
-import Http from "./core/network/Http";
+import Http from "./core/net/Http";
 
 function main(){
     // Http.sendget("127.0.0.1","8561","/fight",
