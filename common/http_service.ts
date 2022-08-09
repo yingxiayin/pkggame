@@ -17,12 +17,14 @@ app.all('*', function (req, res, next) {
  *      prot:
  *      funclist: function list
  */
+
 exports.start = (config:any) => {
     let list = config.funclist;
     for (let reg in list) {
         if (list.hasOwnProperty(reg)) {
             let func = list[reg];
             app.get('/' + reg, func);
+            app.post('/' + reg, func);
         }
     }
     app.listen(config.port);

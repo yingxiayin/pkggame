@@ -1,11 +1,24 @@
-
+import Http from "./core/network/Http";
 
 function main(){
-    
-    console.log("正在加载卡牌配置数据")
-    console.log("测试数据")
+    // Http.sendget("127.0.0.1","8561","/fight",
+    // {
+    //     cardlist:1,
+    // },
+    // (ret:any, data:any) => {
+    //     console.log('ReGet');
+    // });
 
-    
+
+    let send_data = {
+        cards:[1,2,3,4,5],
+    };
+
+    Http.sendPost("127.0.0.1","8561","/fight",
+    send_data,
+    (ret:any, data:any) => {
+        console.log('ReGet');
+    });
 }
 
 main();
