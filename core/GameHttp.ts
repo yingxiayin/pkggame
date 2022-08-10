@@ -86,6 +86,7 @@ function fight(req:any, res:any) {
     let obj = "";
     req.on("data",function(data1:any){
         console.log("data")
+        console.log(data1)
 
         obj += data1;
     })
