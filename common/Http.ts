@@ -1,3 +1,4 @@
+
 export default class Http{
     static reply = function (res:any, data:any) {
 		if (data == null) {
