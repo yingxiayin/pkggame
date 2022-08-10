@@ -94,13 +94,15 @@ function fight(req:any, res:any) {
         console.log("end")
         console.log(obj)
 
+        let retdata:any = {
+            errorcode: Global.msgCode.SUCCESS,
+        };
+        Http.reply(res, retdata);
+        
 		// let contents = qs.parse(obj);
         // console.log(contents)
     })
-    let retdata:any = {
-        errorcode: Global.msgCode.SUCCESS,
-    };
-    Http.reply(res, retdata);
+
 
     // let cardsstr = req.query.cards;
     // console.log(cardsstr)
