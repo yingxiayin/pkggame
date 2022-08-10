@@ -42,15 +42,15 @@ export default class Http{
 	};
 
 	static sendPost = function (host:any, port:any, path:any, data:any, callback:any) {
-		let contents = qs.stringify(data);
+		// let contents = qs.stringify(data);
 		let options:any = {
 			host: host,
 			port: port,
 			path: path,
 			method:'POST',
 			headers:{
-				'Content-Type':'application/x-www-form-urlencoded',
-				'Content-Length':contents.length
+				'Content-Type':'application/json',
+				'Content-Length': Buffer.byteLength(data)
 			}
 		};
 	
@@ -59,11 +59,15 @@ export default class Http{
 			// console.log('HEADERS:'+JSON.stringify(res.headers));
 			res.setEncoding('utf8');
 			res.on('data',function(data:any){
-				console.log("data:",data);   //一段html代码
+				// console.log("data:",data);   //一段html代码
+				
+			});
+			res.on('end', () => {
+				console.log('No more data in response.');
 				callback(data);
 			});
 		});
-		req.write(contents);
+		req.write(data);
 		req.end();
 	};
 	static reply = function (res:any, data:any) {

@@ -86,7 +86,7 @@ function fight(req:any, res:any) {
     let obj = "";
     req.on("data",function(data1:any){
         console.log("data")
-        console.log(data1)
+        // console.log(data1)
 
         obj += data1;
     })
@@ -94,8 +94,8 @@ function fight(req:any, res:any) {
         console.log("end")
         console.log(obj)
 
-		let contents = qs.parse(obj);
-        console.log(contents)
+		// let contents = qs.parse(obj);
+        // console.log(contents)
     })
     let retdata:any = {
         errorcode: Global.msgCode.SUCCESS,
