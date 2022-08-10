@@ -59,9 +59,7 @@ const getCardData = async () => {
     // })
 
     Http.sendPost("127.0.0.1","8561","/fight",
-    {
-        cardlist: JSON.stringify(tokenIdAndOwner),
-    },
+    JSON.stringify(tokenIdAndOwner),
     (ret:any, data:any) => {
         console.log('ReGet');
     });
