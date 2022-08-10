@@ -34,6 +34,10 @@ function main(){
     //加载配置表
     console.log("正在加载卡牌配置数据")
     DB.getCardConfig((errorcode:any, dbdata:any) => {
+        if (errorcode != Global.msgCode.SUCCESS) {
+            console.log("加载卡牌配置数据出错")
+        }
+
         CardMgr.shared.initCards(dbdata);
         GameMgr.shared.init();
         doNet();

@@ -14,10 +14,10 @@ export default class CardMgr {
             if (!this.robots[cardArr[index].level]) {
                 this.robots[cardArr[index].level] = [];
             }
-            if(!this.robots[cardArr[index].level][cardArr[index].group]){
-                this.robots[cardArr[index].level][cardArr[index].group] = [];
+            if(!this.robots[cardArr[index].level][cardArr[index].botstrength]){
+                this.robots[cardArr[index].level][cardArr[index].botstrength] = [];
             }
-            this.robots[cardArr[index].level][cardArr[index].group].push(cardArr[index].cardid);
+            this.robots[cardArr[index].level][cardArr[index].botstrength].push(cardArr[index].cardid);
         }
     }
 

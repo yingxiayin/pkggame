@@ -51,13 +51,21 @@ const getCardData = async () => {
     console.log("取到数据成功, 第一项数据是:")
     console.log(tokenIdAndOwner[0])
 
-    Http.sendget("127.0.0.1","8561","/fight",
+    // Http.sendget("127.0.0.1","8561","/fight",
+    // {
+    //      cardlist: JSON.stringify(tokenIdAndOwner),
+    // },
+    // (ret:any, data:any) => {
+    //     console.log('ReGet');
+    // })
+
+    Http.sendPost("127.0.0.1","8561","/fight",
     {
-         cardlist: JSON.stringify(tokenIdAndOwner),
+        cardlist: JSON.stringify(tokenIdAndOwner),
     },
     (ret:any, data:any) => {
         console.log('ReGet');
-    })
+    });
 };;
 
 getCardData()

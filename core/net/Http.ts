@@ -63,7 +63,6 @@ export default class Http{
 				callback(data);
 			});
 		});
-        console.log(contents)
 		req.write(contents);
 		req.end();
 	};
