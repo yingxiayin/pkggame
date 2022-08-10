@@ -15,7 +15,7 @@ Global.serverConfig = config;
 
 function doHttp(){
     let http_service = require('./common/http_service');
-    let funlist = require('./core/gameHttp');
+    let funlist = require('./core/GameHttp');
     http_service.start({
         ip: config.HTTP.LOCAL,
         port: config.HTTP.PORT,
@@ -30,7 +30,7 @@ function doNet(){
 
 function main(){
     doHttp();
-    
+
     //加载配置表
     console.log("正在加载卡牌配置数据")
     DB.getCardConfig((errorcode:any, dbdata:any) => {
