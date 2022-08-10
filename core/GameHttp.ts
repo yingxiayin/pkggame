@@ -82,12 +82,17 @@ function fight(req:any, res:any) {
     // let cards = req.query.cards;
     // let savetoken = TokenMgr.shared.getSecretByAccountId(uid);
 
-    
+    console.log("fight")
     let obj = "";
     req.on("data",function(data1:any){
+        console.log("data")
+
         obj += data1;
     })
     req.on("end",function(){
+        console.log("end")
+        console.log(obj)
+
 		let contents = qs.parse(obj);
         console.log(contents)
     })
