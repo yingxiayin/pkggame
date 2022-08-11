@@ -9,12 +9,11 @@ export default class Player {
 
     private uid:number = 0;
     private token:string = "";
-    private account:number = 0;
+    private account:string = "";
     private agent!:AgentBase;
     
-    
-    private cardlist:number[] = new Array();
-    private carduse:number[] = new Array();
+    private cardlist:any[] = new Array();
+    private carduse:any[] = new Array();
     protected fightcardlist:number[] = new Array();
     private cardUseTime:string = "";
 
@@ -46,6 +45,10 @@ export default class Player {
         if (info.lasttime && info.lasttime != "") {
             this.dailyRewardTime = moment(info.lasttime).format('YYYY-MM-DD');
         }
+    }
+
+    getaccount(){
+        return this.account;
     }
 
     isGetDailyReward(){
@@ -102,13 +105,13 @@ export default class Player {
     }
 
     setFightZhu(index:number){
-        let ratio = 10;
+        let ratio = 50;
         if(index == 1){
             // this.fightRatio = 10;
         }else if (index == 2) {
-            ratio = 50;
-        }else if (index == 3) {
             ratio = 100;
+        }else if (index == 3) {
+            ratio = 200;
         }
         if (this.kitty < ratio) {
             return;
@@ -166,9 +169,7 @@ export default class Player {
     //     carduse:carduse,
     // }
     clearCardUse(){
-        for (let index = 0; index < this.cardlist.length; index++) {
-            this.carduse[index] = 0;
-        }
+        this.carduse = [];
     }
 
     getCardInfo(){
@@ -198,15 +199,15 @@ export default class Player {
         }
     }
 
-    setCardsUse(carduse:number[]){
+    setCardsUse(carduse:any){
         this.carduse = carduse;
         this.cardUseTime = moment(Date.now()).format('YYYY-MM-DD');
     }
 
     getCardsUse(cardid:number){
-        for (let index = 0; index < this.cardlist.length; index++) {
-            if (this.cardlist[index] == cardid) {
-                return this.carduse[index];
+        for (let index = 0; index < this.carduse.length; index++) {
+            if (this.carduse[index].id == cardid) {
+                return this.carduse[index].num;
             }
         }
         return 0;
@@ -214,10 +215,9 @@ export default class Player {
 
     addCardsUse(cardids:number[]){
         for (let index = 0; index < cardids.length; index++) {
-            
-            for (let index2 = 0; index2 < this.cardlist.length; index++) {
-                if (this.cardlist[index2] == cardids[index]) {
-                    this.carduse[index2] += 1;
+            for (let index2 = 0; index2 < this.carduse.length; index++) {
+                if (this.carduse[index2].id == cardids[index]) {
+                    this.carduse[index2].num += 1;
                 }
             }
         }

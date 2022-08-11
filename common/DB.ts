@@ -33,7 +33,6 @@ export default class DB {
     };
 
     static accountLogin(logininfo:any, callback:any){
-        console.log(logininfo, 'logininfo');
 
         let account = logininfo.account;
         // let password = logininfo.password;
@@ -56,14 +55,14 @@ export default class DB {
                 throw err;
             }
             if (rows.length > 0) {
+                // acc uid kitty lastsign
                 let playerdbinfo = rows[0];
                 console.log(playerdbinfo);
                 callback(Global.msgCode.SUCCESS, playerdbinfo);
             }
             if (rows.length == 0) {
                 // 加入测试卡牌数据
-                
-                sql = `INSERT INTO account(role_account,kitty) VALUES('${account}','200');`;
+                sql = `INSERT INTO account(role_account,kitty) VALUES('${account}','0');`;
                 DB.query(sql, function (err: any, rows: any, fields: any) {
                     if (err) {
                         callback(Global.msgCode.FAILED);
@@ -72,9 +71,8 @@ export default class DB {
                     let playerdbinfo = {
                         role_account:account,
                         uid:rows.insertId,
-                        kitty:200,
+                        kitty:0,
                     };
-                    console.log(playerdbinfo);
                     callback(Global.msgCode.SUCCESS, playerdbinfo);
                     // callback(Global.msgCode.SUCCESS);
                 });
@@ -85,7 +83,7 @@ export default class DB {
     }
 
     static getCardConfig(callback:any){
-        var sql = `SELECT * FROM cardinfo`;
+        var sql = `SELECT * FROM card`;
         DB.query(sql, function (err: any, rows: any, fields: any) {
             if (err) {
                 callback(Global.msgCode.FAILED);
@@ -138,31 +136,36 @@ export default class DB {
                 let nowTime = moment().format('YYYY-MM-DD');
                 let sqlTime = moment(rows[0].lasttime).format('YYYY-MM-DD');
                 let carduse:any = [];
-                let cardids = JSON.parse(rows[0].cardids) ;
+                // let cardids = JSON.parse(rows[0].cardids) ;
                 if (nowTime == sqlTime) {
                     carduse = JSON.parse(rows[0].carduse);
                 }else{
-                    for (let index = 0; index < cardids.length; index++) {
-                        carduse[index] = 0;
-                    }
+                    carduse = [];
+                    // for (let index = 0; index < cardids.length; index++) {
+                    //     carduse[index] = 0;
+                    // }
                 }
-                let carduseStr = JSON.stringify(carduse)
-                let reinfo = {
-                    uid:uid,
-                    cardids:cardids,
-                    carduse:carduse,
-                }
-                let player = PlayerMgr.shared.getPlayer(uid);
-                if (!player) {
-                    callback(Global.msgCode.FAILED);
-                    return;
-                }
-                player.setCardsList(cardids);
-                player.setCardsUse(carduse);
+                // let carduseStr = JSON.stringify(carduse)
+                // let reinfo = {
+                //     uid:uid,
+                //     // cardids:cardids,
+                //     carduse:carduse,
+                // }
 
-                callback(Global.msgCode.SUCCESS, reinfo);
+                callback(Global.msgCode.SUCCESS, carduse);
+
             }else{
-                DB.insertTestCards(uid,callback);
+                let carduse:any = [];
+                let carduseStr = JSON.stringify(carduse);
+                sql = `INSERT INTO usercards(uid,carduse,lasttime) VALUES('${uid}','${carduseStr}',NOW());`;
+                DB.query(sql, function (err: any, rows: any, fields: any) {
+                    if (err) {
+                        callback(Global.msgCode.FAILED);
+                        throw err;
+                    }
+                    callback(Global.msgCode.SUCCESS, []);
+                });
+                // DB.insertTestCards(uid,callback);
             }
         })
     }

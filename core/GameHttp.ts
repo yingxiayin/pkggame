@@ -5,6 +5,8 @@ import FightMgr from "./fight/FightMgr";
 import Global from "./Global";
 import PlayerMgr from "./player/PlayerMgr";
 import qs from "qs";
+import CardMgr from "./card/CardMgr";
+import AgentMgr from "./network/AgentMgr";
 
 
 // 通过连接 获取客户端ip
@@ -85,20 +87,19 @@ function fight(req:any, res:any) {
     console.log("fight")
     let obj = "";
     req.on("data",function(data1:any){
-        console.log("data")
-        // console.log(data1)
-
         obj += data1;
     })
     req.on("end",function(){
         console.log("end")
-        console.log(obj)
-
+        
+        CardMgr.shared.setCardsAffiliation(JSON.parse(obj));
+        
+        AgentMgr.shared.start();
         let retdata:any = {
             errorcode: Global.msgCode.SUCCESS,
         };
         Http.reply(res, retdata);
-        
+
 		// let contents = qs.parse(obj);
         // console.log(contents)
     })

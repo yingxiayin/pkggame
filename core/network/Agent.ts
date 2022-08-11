@@ -48,6 +48,20 @@ export default class Agent extends AgentBase
     
     c2s_login(data:any) {
         let account = data.acc;
+        if (!account) {
+            return;
+        }
+        let player = PlayerMgr.shared.getPlayerByAcc(account);
+        if (player) {
+            let retdata:any = {
+                type:'login',
+                errorcode: Global.msgCode.FAILED,
+                uid: 0,
+            };
+            this.send(retdata);
+            return;
+        }
+
         DB.accountLogin({
             account: account,
         }, (errorcode:any, dbdata:any) => {
@@ -73,44 +87,12 @@ export default class Agent extends AgentBase
             if (errorcode == Global.msgCode.SUCCESS) {
                 this.sendCardsConfig();
                 this.sendCardsInfo();
+                this.sendFirstReward();
                 this.sendDailyReward();
             }
             
         });
 
-        // this.send({id:1,code:0,msg:"登录成功"});
-
-        // let self = this;
-        // if (!data.uid) {
-        //     this.send({id:ProtoID.LOGIN,loginType:0,code:-1,socket_err_msg:"参数错误"});
-        //     return;
-        // }
-
-        // this.accountid = data.uid;
-        // let pPlayer = PlayerMgr.shared.getPlayerByRoleId(data.uid);
-        // if (pPlayer) {
-        //     return;
-        // }
-        
-        // DB.loginByRoleId(data.uid, (errorcode:any, dbdata:any)=> {
-        //     if (errorcode == Global.msgCode.SUCCESS) {
-        //         let dologin = () => {
-        //             let pPlayer = new Player();
-        //             pPlayer.setAgent(self);
-        //             pPlayer.setDBdata(dbdata);
-        //             pPlayer.playerLogined();
-        //         };
-
-        //         let preP = PlayerMgr.shared.getPlayerByRoleId(data.uid);
-        //         if (preP != null) {
-        //             preP.destroy(dologin);
-        //         } else {
-        //             dologin();
-        //         }
-        //     }else{
-        //         this.close();
-        //     }
-        // });
 
         return;
     }
@@ -127,22 +109,45 @@ export default class Agent extends AgentBase
     sendCardsInfo(){
         DB.getCardsInfo(this.player.getUid(), (errorcode:any, dbdata:any) => {
             if (errorcode == Global.msgCode.SUCCESS) {
-                dbdata.type = "cardsInfo";
-                dbdata.errorcode = Global.msgCode.SUCCESS;
-                this.send(dbdata);
+                let sendInfo = {
+                    type : "cardsInfo",
+                    errorcode : Global.msgCode.SUCCESS,
+                    carduse:dbdata,
+                    cardids:CardMgr.shared.GetAccCards(this.player.getaccount()),
+                }
+                // this.player.setCardsUse(dbdata);
+                // dbdata.type = "cardsInfo";
+                // dbdata.errorcode = Global.msgCode.SUCCESS;
+                
+                this.player.setCardsUse(dbdata);
+
+                this.send(sendInfo);
             }
         });
+    }
+
+    sendFirstReward(){
+        if (CardMgr.shared.roleCards.has(this.player.getaccount())) {
+            this.player.addKitty(50);
+            this.player.resetDailyRewardTime();
+            let retdata:any = {
+                type:'firstReward',
+                kitty: 500,
+            };
+            this.send(retdata);
+        }
+        // this.player.addKitty(50);
     }
 
     sendDailyReward(){
         if (this.player.isGetDailyReward()){
 
         }else{
-            this.player.addKitty(50);
+            this.player.addKitty(20);
             this.player.resetDailyRewardTime();
             let retdata:any = {
                 type:'dailyReward',
-                kitty: 50,
+                kitty: 20,
             };
             this.send(retdata);
         }

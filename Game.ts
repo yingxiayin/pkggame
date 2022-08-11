@@ -28,6 +28,7 @@ function doNet(){
     AgentMgr.shared.start();
 }
 
+
 function main(){
     doHttp();
 
@@ -40,13 +41,12 @@ function main(){
 
         CardMgr.shared.initCards(dbdata);
         GameMgr.shared.init();
-        doNet();
+        // doNet();
     });
     
 
     RankMgr.shared.readRankInfo();
-    
-    
+
 }
 
 main();

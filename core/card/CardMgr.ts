@@ -6,18 +6,49 @@ export default class CardMgr {
     cardInfos:any;
     robots:any[] = [];
 
+    roleCards = new Map();
+    // let m = new Map();
+    
+    // m.set('name1', [10]);
+    // m.set('name2', [20]);
+    // m.set('name3', [20,21,22]);
+
+    // console.log(m)
+    // console.log(m.get('name3'))
+    // console.log(m.has('name3'))
+    // console.log(m.has('name6'))
+
     initCards(cardArr:any){
         this.cardInfos = new Array();
         this.robots = [];
         for (let index = 0; index < cardArr.length; index++) {
-            this.cardInfos[cardArr[index].cardid] = cardArr[index]
-            if (!this.robots[cardArr[index].level]) {
-                this.robots[cardArr[index].level] = [];
+            let cardinfo = {
+                cardid:parseInt(cardArr[index].ID),
+                cardrank:parseInt(cardArr[index].RANK),
+                addpoint:parseInt(cardArr[index].addpoint),
+                addcoef:parseInt(cardArr[index].addcoef),
+                colorlevel:parseInt(cardArr[index].level),
+                level:cardArr[index].botstrength,
+                botstrength:parseInt(cardArr[index].group),
             }
-            if(!this.robots[cardArr[index].level][cardArr[index].botstrength]){
-                this.robots[cardArr[index].level][cardArr[index].botstrength] = [];
+            if (cardinfo.level == "S") {
+                cardinfo.level = 1
+            }else if (cardinfo.level == "A") {
+                cardinfo.level = 2
+            }else if (cardinfo.level == "B") {
+                cardinfo.level = 3
+            }else if (cardinfo.level == "C") {
+                cardinfo.level = 4
             }
-            this.robots[cardArr[index].level][cardArr[index].botstrength].push(cardArr[index].cardid);
+
+            this.cardInfos[cardinfo.cardid] = cardinfo
+            if (!this.robots[cardinfo.level]) {
+                this.robots[cardinfo.level] = [];
+            }
+            if(!this.robots[cardinfo.level][cardinfo.botstrength]){
+                this.robots[cardinfo.level][cardinfo.botstrength] = [];
+            }
+            this.robots[cardinfo.level][cardinfo.botstrength].push(cardinfo.cardid);
         }
     }
 
@@ -121,7 +152,6 @@ export default class CardMgr {
         }
     }
 
-
     GetCardInfo(cardid:number) {
         if (this.cardInfos.hasOwnProperty(cardid) == false)
             return null;
@@ -130,5 +160,30 @@ export default class CardMgr {
 
     GetAllCardInfo() {
         return this.cardInfos;
+    }
+
+    GetAccCards(acc:string) {
+        let has = this.roleCards.has(acc);
+        if (!has) {
+            return [];
+        }else{
+            return this.roleCards.get(acc);
+        }
+    }
+
+    setCardsAffiliation (cardlist:any) {
+        this.roleCards = new Map();
+        for (let index = 0; index < cardlist.length; index++) {
+            let cardid = parseInt(cardlist[index].cardId.substring(1));
+            if (cardlist[index].wallet) {
+                let cardacc = cardlist[index].wallet;
+                let accCards = this.roleCards.get(cardacc);
+                if (accCards) {
+                    accCards.push(cardid);
+                }else{
+                    this.roleCards.set(cardacc,[cardid])
+                }
+            }
+        }
     }
 }
