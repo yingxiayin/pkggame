@@ -8,7 +8,7 @@ exports.HTTP = {
 }
 
 exports.DB = {
-	HOST: "13.214.140.157",
+	HOST: "localhost",
 	USER: "game",
 	PWD: "Game@1234",
 	DB: "cardgame",
