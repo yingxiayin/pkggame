@@ -7,10 +7,26 @@ exports.HTTP = {
     PORT: HTTP_PORT,
 }
 
+// exports.DB = {
+// 	HOST: "13.214.140.157",
+// 	USER: "game",
+// 	PWD: "Game@1234",
+// 	DB: "cardgame",
+// 	PORT: 3306,
+// };
+
+// exports.DB = {
+// 	HOST: "13.214.140.157",
+// 	USER: "game",
+// 	PWD: "Game@1234",
+// 	DB: "cardgame",
+// 	PORT: 3306,
+// };
+
 exports.DB = {
-	HOST: "localhost",
-	USER: "game",
-	PWD: "Game@1234",
+	HOST: "13.214.25.158",
+	USER: "CardGame",
+	PWD: "huazai4571",
 	DB: "cardgame",
 	PORT: 3306,
 };
